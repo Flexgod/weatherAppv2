@@ -1,22 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Weather 1.0</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="fonts/css/font-awesome.min.css" rel="stylesheet">
-    <link href="fonts/css/font-awesome.css" rel="stylesheet">
-    <link href="css/bootstrap-social.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
-    <link href="css/corp.css" rel="stylesheet">
-</head>
-
-<body>
+<% include ./partials/head.ejs %>
     <!-- Page Content -->
     <div class="container h-100">
         <div class="row h-100 justify-content-center align-items-center">
@@ -79,22 +61,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="row justify-content-center align-items-center">
-                    <br>
-                    <p>
-                        <a class="poweredby" href="https://darksky.net/poweredby/">
-                               Powered by Dark Sky
-                    </a>
-                    </p>
-                </div>
+                <% include ./partials/darksky.ejs %>
             </div>
         </div>
     </div>
-
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-
-</body>
-
-</html>
+    <!--End of Page Content -->
+    <% include ./partials/foot.ejs %>
