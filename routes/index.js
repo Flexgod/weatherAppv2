@@ -1,21 +1,25 @@
 var express = require('express');
 var router = express.Router();
-var https = require('https');
-let api_key = process.env.DARK_SKY_API_KEY
-let urlreq = 'https://api.darksky.net/forecast/'+api_key+'/6.5244,3.3792';
-
+//Require the Weather Controller file.
+let weatherController = require('../controller/weather');
+//Set Default home city name
+let cityName = 'Lagos, Nigeria';
+let lati = 42.3601;
+let longi = -71.0589;
 /* GET home page. */
 router.get('/', function (req, response, next) {
-  response.render('index', {Temperature: '2', Currently: 'icon'});
-  console.log('port value is: '+ process.env);
+  weatherController.weatherReporter(lati, longi);
+  response.render('index', { city: cityName });
 });
 /* Route to Get Error page */
-router.get('/error', function(req, res){
+router.get('/error', function (req, res) {
   res.render('error');
 });
 /* Route handler to seach for city logitude and latitude */
-router.post('/', function(req, response, next){
-  let cityWeather = req.body.city;
+router.post('/', function (req, response, next) {
+  let cityName = req.body.city;
+  //Call detect city geo location function here.
+  weatherController.cityGeolocation(cityName);
   response.render('weather', { city: cityWeather });
 });
 
