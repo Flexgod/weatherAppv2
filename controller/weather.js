@@ -22,7 +22,7 @@ function cityGeolocation(city) {
 // =================================================
 //Weather Reporter
 // =================================================
-function weatherReporter(lati, longi) {
+function weatherReporter(lati, longi, callback) {
     let api_call = apiUrl + apiKey + "/" + lati + "," + longi;
     //Call DarkSkyApi to report weather for location
     var body = "";
@@ -40,8 +40,8 @@ function weatherReporter(lati, longi) {
             var windSpeed = data.currently.windSpeed;
             var humidity = ((data.currently.humidity) * 100);
             var icon = data.currently.summary;
-            let list = { tempInCelcius, windSpeed, humidity, icon};
-            console.log(humidity);
+            let list = { tempInCelcius, windSpeed, humidity, icon };
+            return callback(list);
         });
     });
 
@@ -50,6 +50,22 @@ function weatherReporter(lati, longi) {
     });
     req.end();
 }
-
-module.exports.weatherReporter = weatherReporter;
+//CREATE A FUNCTION TO CALL Home page Weather WEATHER
+function indexWeather(req, res) {
+    //Set Default home city name
+    let cityName = 'Lagos, Nigeria';
+    let lati = 42.3601;
+    let longi = -71.0589;
+    weatherReporter(lati, longi, function (response) {
+        console.log(response.tempInCelcius);
+        res.render('index', { city: cityName, cityTemp: response.tempInCelcius });
+    });
+}
+//Function to hanfle the searched city weather
+function searchCityWeather(req, res) {
+    //Call the goecode api to get the location
+    //then call the weeather with this!
+}
+module.exports.indexWeather = indexWeather;
+module.exports.searchCityWeather = searchCityWeather;
 module.exports.cityGeolocation = cityGeolocation;
