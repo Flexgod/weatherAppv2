@@ -1,4 +1,6 @@
 // Set up Variables
+//Require Json Geolocation Store
+const cityJson = require('../data/location.json');
 const https = require('https');
 let apiKey = process.env.DARK_SKY_API_KEY;
 let apiUrl = 'https://api.darksky.net/forecast/';
@@ -63,6 +65,16 @@ function indexWeather(req, res) {
 }
 //Function to hanfle the searched city weather
 function searchCityWeather(req, res) {
+    //Validate User Inout isnt empty
+    let cityNameSearch = req.body.city;
+    //Check if city exists in the JSON data Store
+    let cityS = cityJson.cities.find(item => item.cityName === cityNameSearch);
+    if (cityS.cityName !== cityNameSearch) {
+        console.log('No city Found');
+    } else {
+        console.log(cityS);
+        res.redirect('/');
+    }
     //Call the goecode api to get the location
     //then call the weeather with this!
 }

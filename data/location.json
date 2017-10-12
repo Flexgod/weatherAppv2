@@ -1,0 +1,13 @@
+{
+    "cities": [{
+            "cityName": "London",
+            "lati": "",
+            "logi": ""
+        },
+        {
+            "cityName": "New York",
+            "lati": "",
+            "logi": ""
+        }
+    ]
+}
