@@ -1,26 +1,10 @@
 // Set up Variables
 //Require Json Geolocation Store
-const cityJson = require('../data/location.json');
+const cityJson = require('../data/cities.json');
 const https = require('https');
 let apiKey = process.env.DARK_SKY_API_KEY;
 let apiUrl = 'https://api.darksky.net/forecast/';
-let googleKey = process.env.GOOGLE_API_KEY;
-// =================================================
-//Geolocation Detector from city name to Geo code
-// =================================================
-function cityGeolocation(city) {
-    /*Call google Places API here
-    get the Location of the place and call the weather reporter function
-    */
-    let googleApiCall = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + city + '&key=' + googleKey;
-    var request = https.request(googleApiCall, function (err, response, body) {
-        if (!err && response.statusCode === 200) {
-            console.log(body);
-        } else {
-            console.log(err);
-        }
-    });
-}
+
 // =================================================
 //Weather Reporter
 // =================================================
@@ -68,15 +52,24 @@ function searchCityWeather(req, res) {
     //Validate User Inout isnt empty
     let cityNameSearch = req.body.city;
     //Check if city exists in the JSON data Store
-    let cityS = cityJson.cities.find(item => item.cityName === cityNameSearch);
-    if (cityS.cityName !== cityNameSearch) {
+    let cityS = cityJson.cities.find(item => item.name === cityNameSearch);
+    //if city is not found
+    if (!cityS) {
         console.log('No city Found');
-    } else {
-        console.log(cityS);
+        //No city found display errors
         res.redirect('/');
+    } else {
+        //city is found get the goecode and get weather
+        console.log(cityS);
+        let lati = cityS.lat;
+        let longi = cityS.lng;
+        let cityName = cityS.name;
+        let cityCountry = cityS.country;
+        weatherReporter(lati, longi, function (response) {
+        console.log(response.tempInCelcius, cityName, cityCountry);
+        res.render('weather', { city: cityName, cityTemp: response.tempInCelcius, cityCountry: cityCountry });
+        });
     }
-    //Call the goecode api to get the location
-    //then call the weeather with this!
 }
 module.exports.indexWeather = indexWeather;
 module.exports.searchCityWeather = searchCityWeather;
