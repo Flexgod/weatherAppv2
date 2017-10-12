@@ -39,12 +39,12 @@ function weatherReporter(lati, longi, callback) {
 //CREATE A FUNCTION TO CALL Home page Weather WEATHER
 function indexWeather(req, res) {
     //Set Default home city name
-    let cityName = 'Lagos, Nigeria';
-    let lati = 42.3601;
-    let longi = -71.0589;
+    let cityName = 'Lagos, Ng';
+    let lati = 6.45407;
+    let longi = 3.39467;
     weatherReporter(lati, longi, function (response) {
         console.log(response.tempInCelcius);
-        res.render('index', { city: cityName, cityTemp: response.tempInCelcius });
+        res.render('index', { city: cityName, cityTemp: response.tempInCelcius, cityWindSpeed: response.windSpeed, cityHumidity: response.humidity, cityIcon: response.icon });
     });
 }
 //Function to hanfle the searched city weather
@@ -57,7 +57,7 @@ function searchCityWeather(req, res) {
     if (!cityS) {
         console.log('No city Found');
         //No city found display errors
-        res.redirect('/');
+        res.redirect('/error');
     } else {
         //city is found get the goecode and get weather
         console.log(cityS);
@@ -67,10 +67,9 @@ function searchCityWeather(req, res) {
         let cityCountry = cityS.country;
         weatherReporter(lati, longi, function (response) {
         console.log(response.tempInCelcius, cityName, cityCountry);
-        res.render('weather', { city: cityName, cityTemp: response.tempInCelcius, cityCountry: cityCountry });
+        res.render('weather', { city: cityName, cityTemp: response.tempInCelcius, cityCountry: cityCountry, cityWindSpeed: response.windSpeed, cityHumidity: response.humidity, cityIcon: response.icon });
         });
     }
 }
 module.exports.indexWeather = indexWeather;
 module.exports.searchCityWeather = searchCityWeather;
-module.exports.cityGeolocation = cityGeolocation;
