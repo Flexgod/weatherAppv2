@@ -42,7 +42,7 @@ function indexWeather(req, res) {
     let cityName = 'Lagos, Ng';
     let lati = 6.45407;
     let longi = 3.39467;
-    weatherReporter(lati, longi, function (response) {
+    weatherReporter(lati, longi, function(response) {
         console.log(response.tempInCelcius);
         res.render('index', { city: cityName, cityTemp: response.tempInCelcius, cityWindSpeed: response.windSpeed, cityHumidity: response.humidity, cityIcon: response.icon });
     });
@@ -65,11 +65,35 @@ function searchCityWeather(req, res) {
         let longi = cityS.lng;
         let cityName = cityS.name;
         let cityCountry = cityS.country;
-        weatherReporter(lati, longi, function (response) {
-        console.log(response.tempInCelcius, cityName, cityCountry);
-        res.render('weather', { city: cityName, cityTemp: response.tempInCelcius, cityCountry: cityCountry, cityWindSpeed: response.windSpeed, cityHumidity: response.humidity, cityIcon: response.icon });
+        weatherReporter(lati, longi, function(response) {
+            console.log(response.tempInCelcius, cityName, cityCountry);
+            res.render('weather', { city: cityName, cityTemp: response.tempInCelcius, cityCountry: cityCountry, cityWindSpeed: response.windSpeed, cityHumidity: response.humidity, cityIcon: response.icon });
         });
     }
 }
+
+// API HANDLER FOR REACT APP
+
+//  Function to hanfle the searched city weather
+function searchCityWeatherAPI(req, res) {
+    // Validate User Inout isnt empty
+    const { city } = req.body;
+    // Check if city exists in the JSON data Store
+    const citySearch = cityJson.cities.find(item => item.name === city);
+    // if city is not found
+    if (!citySearch) {
+        res.status(400).json('Error Could Not find City');
+    } else {
+        //  city is found get the goecode and get weather
+        const lati = citySearch.lat;
+        const longi = citySearch.lng;
+        weatherReporter(lati, longi, (response) => {
+            console.log(response);
+            res.status(200).json(response);
+        });
+    }
+}
+
+module.exports.searchCityWeatherAPI = searchCityWeatherAPI;
 module.exports.indexWeather = indexWeather;
 module.exports.searchCityWeather = searchCityWeather;
