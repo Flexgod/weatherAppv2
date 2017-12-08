@@ -77,7 +77,7 @@ function searchCityWeather(req, res) {
 //  Function to hanfle the searched city weather
 function searchCityWeatherAPI(req, res) {
     // Validate User Inout isnt empty
-    const { city } = req.body;
+    const city = req.body.city;
     // Check if city exists in the JSON data Store
     const citySearch = cityJson.cities.find(item => item.name === city);
     // if city is not found
@@ -87,7 +87,7 @@ function searchCityWeatherAPI(req, res) {
         //  city is found get the goecode and get weather
         const lati = citySearch.lat;
         const longi = citySearch.lng;
-        weatherReporter(lati, longi, (response) => {
+        weatherReporter(lati, longi, function(response) {
             console.log(response);
             res.status(200).json(response);
         });
