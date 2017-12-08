@@ -12,6 +12,6 @@ router.get('/error', function (req, res) {
 /* Route handler to seach for city logitude and latitude */
 router.post('/', weatherController.searchCityWeather);
 
-router.post('/api/', weatherController.searchCityWeatherAPI);
+router.get('/api/:lat/:lng', weatherController.searchCityWeatherAPI);
 
 module.exports = router;
