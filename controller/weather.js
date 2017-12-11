@@ -23,11 +23,11 @@ function weatherReporter(lati, longi, callback) {
             // =================================================
             var tempInCelcius = ((data.currently.apparentTemperature - 32) * (5 / 9));
             tempInCelcius = Math.round(tempInCelcius);
-            const countty = data.timezone;
+            const country = data.timezone;
             var windSpeed = data.currently.windSpeed;
             var humidity = ((data.currently.humidity) * 100);
             var icon = data.currently.summary;
-            let list = { tempInCelcius, windSpeed, humidity, icon };
+            let list = { tempInCelcius, windSpeed, humidity, icon, country };
             return callback(list);
         });
     });
