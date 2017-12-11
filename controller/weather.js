@@ -23,6 +23,7 @@ function weatherReporter(lati, longi, callback) {
             // =================================================
             var tempInCelcius = ((data.currently.apparentTemperature - 32) * (5 / 9));
             tempInCelcius = Math.round(tempInCelcius);
+            const countty = data.timezone;
             var windSpeed = data.currently.windSpeed;
             var humidity = ((data.currently.humidity) * 100);
             var icon = data.currently.summary;
@@ -42,7 +43,7 @@ function indexWeather(req, res) {
     let cityName = 'Lagos, Ng';
     let lati = 6.45407;
     let longi = 3.39467;
-    weatherReporter(lati, longi, function (response) {
+    weatherReporter(lati, longi, function(response) {
         console.log(response.tempInCelcius);
         res.render('index', { city: cityName, cityTemp: response.tempInCelcius, cityWindSpeed: response.windSpeed, cityHumidity: response.humidity, cityIcon: response.icon });
     });
@@ -65,7 +66,7 @@ function searchCityWeather(req, res) {
         let longi = cityS.lng;
         let cityName = cityS.name;
         let cityCountry = cityS.country;
-        weatherReporter(lati, longi, function (response) {
+        weatherReporter(lati, longi, function(response) {
             console.log(response.tempInCelcius, cityName, cityCountry);
             res.render('weather', { city: cityName, cityTemp: response.tempInCelcius, cityCountry: cityCountry, cityWindSpeed: response.windSpeed, cityHumidity: response.humidity, cityIcon: response.icon });
         });
@@ -80,7 +81,7 @@ function searchCityWeatherAPI(req, res) {
     //  city is found get the goecode and get weather
     const lati = req.params.lat;
     const longi = req.params.lng;
-    weatherReporter(lati, longi, function (response) {
+    weatherReporter(lati, longi, function(response) {
         res.json(response);
     });
 }
